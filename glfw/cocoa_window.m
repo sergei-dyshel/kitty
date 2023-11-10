@@ -110,13 +110,13 @@ vk_code_to_functional_key_code(uint8_t key_code) {  // {{{
         case 0x4c: return GLFW_FKEY_KP_ENTER;
         case 0x51: return GLFW_FKEY_KP_EQUAL;
         case 0x38: return GLFW_FKEY_LEFT_SHIFT;
-        case 0x3b: return GLFW_FKEY_LEFT_CONTROL;
+        case 0x37: return GLFW_FKEY_LEFT_CONTROL;
         case 0x3a: return GLFW_FKEY_LEFT_ALT;
-        case 0x37: return GLFW_FKEY_LEFT_SUPER;
+        case 0x3b: return GLFW_FKEY_LEFT_SUPER;
         case 0x3c: return GLFW_FKEY_RIGHT_SHIFT;
-        case 0x3e: return GLFW_FKEY_RIGHT_CONTROL;
+        case 0x36: return GLFW_FKEY_RIGHT_CONTROL;
         case 0x3d: return GLFW_FKEY_RIGHT_ALT;
-        case 0x36: return GLFW_FKEY_RIGHT_SUPER;
+        case 0x3e: return GLFW_FKEY_RIGHT_SUPER;
 /* end vk to functional */
         default:
             return 0;
@@ -501,11 +501,11 @@ translateFlags(NSUInteger flags)
     if (flags & NSEventModifierFlagShift)
         mods |= GLFW_MOD_SHIFT;
     if (flags & NSEventModifierFlagControl)
-        mods |= GLFW_MOD_CONTROL;
+        mods |= GLFW_MOD_SUPER;
     if (flags & NSEventModifierFlagOption)
         mods |= GLFW_MOD_ALT;
     if (flags & NSEventModifierFlagCommand)
-        mods |= GLFW_MOD_SUPER;
+        mods |= GLFW_MOD_CONTROL;
     if (flags & NSEventModifierFlagCapsLock)
         mods |= GLFW_MOD_CAPS_LOCK;
 
@@ -1096,11 +1096,11 @@ convert_cocoa_to_carbon_modifiers(NSUInteger flags) {
     if (flags & NSEventModifierFlagShift)
         mods |= shiftKey;
     if (flags & NSEventModifierFlagControl)
-        mods |= controlKey;
+        mods |= cmdKey;
     if (flags & NSEventModifierFlagOption)
         mods |= optionKey;
     if (flags & NSEventModifierFlagCommand)
-        mods |= cmdKey;
+        mods |= controlKey;
     if (flags & NSEventModifierFlagCapsLock)
         mods |= alphaLock;
 
@@ -1278,11 +1278,11 @@ is_ascii_control_char(char x) {
         case GLFW_FKEY_LEFT_SUPER:
         case GLFW_FKEY_RIGHT_SUPER:
             mod_name = "super";
-            action = modifierFlags & NSEventModifierFlagCommand ? GLFW_PRESS : GLFW_RELEASE; break;
+            action = modifierFlags & NSEventModifierFlagControl ? GLFW_PRESS : GLFW_RELEASE; break;
         case GLFW_FKEY_LEFT_CONTROL:
         case GLFW_FKEY_RIGHT_CONTROL:
             mod_name = "ctrl";
-            action = modifierFlags & NSEventModifierFlagControl ? GLFW_PRESS : GLFW_RELEASE; break;
+            action = modifierFlags & NSEventModifierFlagCommand ? GLFW_PRESS : GLFW_RELEASE; break;
         case GLFW_FKEY_LEFT_ALT:
         case GLFW_FKEY_RIGHT_ALT:
             mod_name = "alt";
@@ -3139,11 +3139,11 @@ glfwGetCocoaKeyEquivalent(uint32_t glfw_key, int glfw_mods, int *cocoa_mods) {
     if (glfw_mods & GLFW_MOD_SHIFT)
         *cocoa_mods |= NSEventModifierFlagShift;
     if (glfw_mods & GLFW_MOD_CONTROL)
-        *cocoa_mods |= NSEventModifierFlagControl;
+        *cocoa_mods |= NSEventModifierFlagCommand;
     if (glfw_mods & GLFW_MOD_ALT)
         *cocoa_mods |= NSEventModifierFlagOption;
     if (glfw_mods & GLFW_MOD_SUPER)
-        *cocoa_mods |= NSEventModifierFlagCommand;
+        *cocoa_mods |= NSEventModifierFlagControl;
     if (glfw_mods & GLFW_MOD_CAPS_LOCK)
         *cocoa_mods |= NSEventModifierFlagCapsLock;
     return _glfwPlatformGetNativeKeyForKey(glfw_key);
